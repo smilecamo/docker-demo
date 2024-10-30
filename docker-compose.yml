@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: my-node-app
+    ports:
+      - "80:80"
+      - "443:443"
+      - "5177:5177"
+    restart: unless-stopped
+    volumes:
+      - ./logs:/var/log/nginx  # Nginx 日志
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
