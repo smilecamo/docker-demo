@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  # 使用 Dockerfile1 构建自定义镜像
+  my-app:
+    #   # 使用 Dockerfile1 作为构建本地配置文件
+    # build:
+    #   dockerfile: Dockerfile1
+    # 使用私有仓库镜像
+    image: smilecamo99/my-app:0.01
+    ports:
+      - 3000:3000
+    environment:
+      # mongo-express 管理员用户名，从环境变量获取 在命令行中 export MONGO_INITDB_ROOT_USERNAME=admin 可以进行设置
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+        # mongo-express 管理员密码，从环境变量获取
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+  # MongoDB 服务
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+  # mongo-express 服务
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      # 连接的 MongoDB 服务器名称，对应 services 中定义的服务名
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    # 确保 mongodb 服务先启动
+    depends_on:
+      - mongodb
