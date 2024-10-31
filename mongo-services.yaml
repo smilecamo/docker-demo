@@ -10,9 +10,9 @@ services:
     ports:
       - 3000:3000
     environment:
-      # mongo-express 管理员用户名，从环境变量获取 在命令行中 export MONGO_INITDB_ROOT_USERNAME=admin 可以进行设置
+      # 管理员用户名，从环境变量获取 在命令行中 export MONGO_INITDB_ROOT_USERNAME=admin 可以进行设置
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-        # mongo-express 管理员密码，从环境变量获取
+        # 管理员密码，从环境变量获取
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
   # MongoDB 服务
   mongodb:
